@@ -1,0 +1,41 @@
+<!-- popup_content.html -->
+<div class="popup-modal">
+<div class="container">
+    <form class="form-inline mt-3" method="get">
+        <div class="form-group mb-2">
+            <h1>Localize products</h1>
+            <label for="filterName" class="sr-only">Filter by Name</label>
+            <input type="text" class="form-control" id="filterName" name="name" placeholder="Filter by Name">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Filter</button>
+    </form>
+    <h2>Research:</h2>
+    <table class="table table-striped table-bordered table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Group</th>
+                <th scope="col">BarCode</th>
+                <th scope="col">Price</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.group }}</td>
+                <td>{{ product.barcode }}</td>
+                <td>{{ product.price }}</td>
+                <td><a href="{% url 'delete_product' product.id %}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button id="closePopupButton">Close</button>
+</div>
+</div>

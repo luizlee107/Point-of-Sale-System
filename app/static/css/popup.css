@@ -1,0 +1,43 @@
+/* popup.css */
+/* Styling for the pop-up container */
+
+
+/* popup.css */
+.popup-modal {
+    width: 70%; /* Adjust the width to your preference */
+    max-width: 600px; /* Maximum width */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001; /* Ensure the pop-up is on top of everything else */
+}
+/* Styling for the pop-up container */
+.popup-container {
+    display: none; /* Hide the container by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000; /* Adjust the z-index as needed */
+}
+
+/* Styling for the pop-up content */
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: absolute; /* Use absolute positioning */
+    top: 50%; /* Place the top edge at the vertical center of the parent */
+    left: 50%; /* Place the left edge at the horizontal center of the parent */
+    transform: translate(-50%, -50%); /* Center the pop-up both vertically and horizontally */
+}
