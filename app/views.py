@@ -92,3 +92,52 @@ def delete_product(request,pk=None):
 def update_product(request,pk=None):
     Product.objects.get(id=pk).delete()
     return redirect('products.html')
+
+
+def calc(request):
+    if request.method == 'POST':
+        string = str(request.POST['num1'])
+        result = 0.0
+
+        # Initialize a variable to store the current number
+        current_number = ''
+        # Initialize a variable to store the current operation  
+        current_operation = '+'
+        calculation_steps = []
+
+        for i in string:
+            if i == ',':
+                i = '.'  # Replace ',' with '.'
+            if i.isdigit() or i == '.':
+                current_number += i
+            elif i in ['+', '-', '*']:
+                # If the character is an operator, perform the current operation and update
+                if current_operation == '*':
+                    result *= round(float(current_number),2)
+                elif current_operation == '+':
+                    result += round(float(current_number),2)
+                elif current_operation == '-':
+                    result -= round(float(current_number),2)
+                
+                calculation_steps.append(f"{current_number} {current_operation}")
+                current_number = ''
+                current_operation = i
+
+        # Add the last number in the string to the result based on the last operation
+        if current_operation == '*':
+            result *= round(float(current_number),2)
+        elif current_operation == '+':
+            result += round(float(current_number),2)
+        elif current_operation == '-':
+            result -= round(float(current_number),2)
+
+        calculation_steps.append(f"{current_number}")
+
+        content = {
+            'result': result,
+            'calculation_steps': calculation_steps
+        }
+
+        return render(request, 'calculator.html', content)
+
+    return render(request, 'calculator.html')
