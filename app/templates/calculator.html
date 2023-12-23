@@ -10,15 +10,20 @@
         <title>Calculator</title>
         <link rel="stylesheet" href="{% static 'css/calculator.css' %}">
         <style>
-
+            
+    
             .container {
                 max-width: 600px;
                 margin: auto;
+                font-size:10px
                                 
             }
     
             .print-hidden {
                 display: none;
+                
+            
+              
             
             }
     
@@ -49,24 +54,32 @@
             <button type="submit">Calculate</button>           
 
         </form>
+        <br>
+        
+        
+    
         <div id="content" class="print-hidden">
-        <p>AVENIDA CELSO GARCIA,386,BRÁS,SAO PAULO-SP</p>
-        <p>CEP:03014-000</p>
-        <p>------------------------------------------</p>
-
+        <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
+        <p>SAO PAULO-SP, CEP: 03014-000</p>
+        <p>--------------------------------------------------------------------</p>
+        <p id="dateTime"> Cx: 001 Op: 001 </p>
+        <p>--------------------------------------------------------------------</p>
+        
 
         </div>
+
+        
+    </div>
         <div class="calculation">
             <ul>
                 {% for step in calculation_steps %}
                     <li>{{ step }}</li>
                 {% endfor %}
             </ul>
-            <p>------------------------------------------</p>
-            <p>TOTAL R$  {{ result }}</p>
-            <p>------------------------------------------</p>
+            <p>--------------------------------------------------------------------</p>
+            <h3>TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ result }}</h3>
+            <p>--------------------------------------------------------------------</p>
          </div>
-    </div>
 
     <script>
         function toggleForm() {
@@ -81,6 +94,18 @@
             } 
 
         }
+        function updateDateTime() {
+            var now = new Date();
+            var dateTimeString = now.toLocaleString(); 
+
+
+            document.getElementById('dateTime').innerHTML = 'Caixa: 001 Op: 001 Data: ' + dateTimeString;
+        }
+
+        // Call the function initially
+        updateDateTime();
+
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .forms import *
 from .models import *
+from django.http import JsonResponse
 
 def pos(request):
     # Initialize variables
@@ -39,11 +40,10 @@ def pos(request):
     return render(request, 'pos.html', context)
 
 
-    
 def products2(request):
     if request.method == 'GET':
         name_to_filter = request.GET.get('name') 
-        barcode_to_filter=request.GET.get('barcode')
+        barcode_to_filter = request.GET.get('barcode')
         
         if name_to_filter:
             products = Product.objects.filter(name__icontains=name_to_filter) 
@@ -53,8 +53,11 @@ def products2(request):
         else:
             products = Product.objects.all()
         
-        return render(request, 'popup_content.html', {'products': products})
-    
+        # Prepare data to be sent as JSON
+        product_data = [{'id': product.id, 'name': product.name, 'group': product.group, 'barcode': product.barcode, 'price': product.price} for product in products]
+
+        # Return JSON response
+        return JsonResponse({'products': product_data})
 
     
 def products(request):
@@ -97,7 +100,7 @@ def update_product(request,pk=None):
 def calc(request):
     if request.method == 'POST':
         string = str(request.POST['num1'])
-        result = 0.0
+        result = 0.00
 
         # Initialize a variable to store the current number
         current_number = ''
@@ -107,34 +110,36 @@ def calc(request):
 
         for i in string:
             if i == ',':
-                i = '.'  # Replace ',' with '.'
+                i = '.'  
             if i.isdigit() or i == '.':
                 current_number += i
             elif i in ['+', '-', '*']:
-                # If the character is an operator, perform the current operation and update
-                if current_operation == '*':
-                    result *= round(float(current_number),2)
-                elif current_operation == '+':
-                    result += round(float(current_number),2)
-                elif current_operation == '-':
-                    result -= round(float(current_number),2)
                 
-                calculation_steps.append(f"{current_number} {current_operation}")
+                if current_operation == '*':
+                    result *= float(current_number)
+                elif current_operation == '+':
+                    result += float(current_number)
+                elif current_operation == '-':
+                    result -= float(current_number)
+                
+                # Use string formatting to ensure exactly two decimal places
+                calculation_steps.append(f" {float(current_number):.2f} {current_operation}")
                 current_number = ''
                 current_operation = i
 
         # Add the last number in the string to the result based on the last operation
         if current_operation == '*':
-            result *= round(float(current_number),2)
+            result *= float(current_number)
         elif current_operation == '+':
-            result += round(float(current_number),2)
+            result += float(current_number)
         elif current_operation == '-':
-            result -= round(float(current_number),2)
+            result -= float(current_number)
 
-        calculation_steps.append(f"{current_number}")
+        # Use string formatting to ensure exactly two decimal places
+        calculation_steps.append(f"{float(current_number):.2f}")
 
         content = {
-            'result': result,
+            'result': f"{result:.2f}",
             'calculation_steps': calculation_steps
         }
 
