@@ -1,0 +1,18 @@
+
+{% for product in products %}
+<tr id="product-{{ product.pk }}" class="product-row">
+
+  <td>{{ product.name }}</td>
+  <td>{{ product.group }}</td>
+  <td>{{ product.barcode }}</td>
+  <td>{{ product.price }}</td>
+  <td>
+    <button class="btn btn-primary btn-sm" hx-get="{% url 'edit_product' pk=product.pk %}" hx-target="#dialog">Edit</button>
+  </td>
+  <td>
+  <a href="{% url 'remove_product' pk=product.id %}" class="btn btn-danger btn-sm">
+    <i class="fa fa-trash"> x </i>
+</a>
+</td>
+</tr>
+{% endfor %}

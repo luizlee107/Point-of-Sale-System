@@ -1,0 +1,116 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculator</title>
+        <link rel="stylesheet" href="{% static 'css/calculator.css' %}">
+        <style>
+            
+    
+            .container {
+                max-width: 600px;
+                margin: auto;
+                font-size:10px
+                                
+            }
+    
+            .print-hidden {
+                display: none;
+                
+            
+              
+            
+            }
+    
+            @media print {
+                body {
+                    margin: 0;
+                    padding: 10mm;
+                 
+                }
+    
+                .print-visible {
+                    display: block !important;
+    
+                }
+            }
+        </style>
+    </head>
+</head>
+<body>
+ 
+    <div class="container">
+        <button onclick="toggleForm()" accesskey="t">Weelee Doces</button>
+        
+        <form method="post" action="{% url 'calc' %}" id="calcForm" class="print-hidden">
+            {% csrf_token %}
+            <label for="num1">Enter a calculation:</label>
+            <input type="text" name="num1" id="num1" required>
+            <button type="submit">Calculate</button>           
+
+        </form>
+        <br>
+        
+        
+    
+        <div id="content" class="print-hidden">
+        <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
+        <p>SAO PAULO-SP, CEP: 03014-000</p>
+        <p>--------------------------------------------------------------------</p>
+        <p>CUPOM DE CONTROLE</p>
+        <p>--------------------------------------------------------------------</p>
+        <p id="dateTime"> Cx: 001 Op: 001 </p>
+        <p>--------------------------------------------------------------------</p>
+        
+
+        </div>
+
+        
+    </div>
+        <div class="calculation">
+            <ul>
+                {% for step in calculation_steps %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+            </ul>
+            <p>--------------------------------------------------------------------</p>
+            <h3>TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ result }}</h3>
+            <p>--------------------------------------------------------------------</p>
+            <p>OBRIGADO PELA PREFERENCIA</p>
+            <p>VOLTE SEMPRE</p>
+            <p>--------------------------------------------------------------------</p>
+         </div>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById('calcForm');
+            var content = document.getElementById('content');
+            
+            if  (form.classList.toggle('print-hidden')) {
+                content.classList.toggle('print-visible')
+            } else {
+                content.classList.toggle('print-hidden');
+                
+            } 
+
+        }
+        function updateDateTime() {
+            var now = new Date();
+            var dateTimeString = now.toLocaleString(); 
+
+
+            document.getElementById('dateTime').innerHTML = 'Caixa: 001 Op: 001 Data: ' + dateTimeString;
+        }
+
+        // Call the function initially
+        updateDateTime();
+
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>
