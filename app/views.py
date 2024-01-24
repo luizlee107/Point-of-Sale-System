@@ -8,59 +8,37 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 
 def pos(request):
-    # Initialize variables
-    cart_items = []
-    cart_total = 0
-    form = PosForm(request.POST or None)
-    products = Product.objects.all()  
+    cart_items = []  # Default value
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('product_list')
-        
-        # Process form data here if needed
-        
-    # Populate cart_items with all filtered products
-    for product in products:
-        cart_items.append({
-            'name': product.name,
-            'price_unit': product.price,
-            'quantity2': 1,
-            'total': product.price * 1,
-        })
-    
-    # Calculate cart total
-    cart_total = sum(item['total'] for item in cart_items)    
-
-    context = {
-        'cart_items': cart_items,
-        'cart_total': cart_total,
-        'form': form,
-        'products': products,
-    }
-
-    return render(request, 'pos.html', context)
-
-
-def products2(request):
     if request.method == 'GET':
         name_to_filter = request.GET.get('name') 
         barcode_to_filter = request.GET.get('barcode')
         
         if name_to_filter:
-            products = Product.objects.filter(name__icontains=name_to_filter) 
-           
+            filtered_products = Product.objects.filter(name__icontains=name_to_filter)
         elif barcode_to_filter:
-             products = Product.objects.filter(barcode__icontains=barcode_to_filter) 
+            filtered_products = Product.objects.filter(barcode__icontains=barcode_to_filter)
         else:
-            products = Product.objects.all()
-        
-        # Prepare data to be sent as JSON
-        product_data = [{'id': product.id, 'name': product.name, 'group': product.group, 'barcode': product.barcode, 'price': product.price} for product in products]
+            filtered_products = Product.objects.all()
 
-        # Return JSON response
-        return JsonResponse({'products': product_data})
+        # Assuming you have a Cart model with a ForeignKey to Product
+        for product in filtered_products:
+            cart_entry, created = Cart.objects.get_or_create(product=product)
+            if not created:
+                cart_entry.quantity += 1
+                cart_entry.save()
+
+        # Get the cart items after processing the products
+        cart_items = Cart.objects.all()
+
+           
+    context = {    
+        'filtered_products': filtered_products,
+        'cart_items': cart_items
+    }
+
+    return render(request, 'pos.html', context)
+
 
 def products_filter(request):
     # Handling GET requests
@@ -74,6 +52,7 @@ def products_filter(request):
             products = Product.objects.filter(barcode__icontains=barcode_to_filter) 
         else:
             products = Product.objects.all()
+            
             
     context = {    
         'products': products
@@ -94,7 +73,23 @@ def update_product(request,pk=None):
 
 
 def product(request):
-    return render(request, 'product.html')
+     # Handling GET requests
+    if request.method == 'GET':
+        name_to_filter = request.GET.get('name') 
+        barcode_to_filter = request.GET.get('barcode')
+        
+        if name_to_filter:
+            products = Product.objects.filter(name__icontains=name_to_filter) 
+        elif barcode_to_filter:
+            products = Product.objects.filter(barcode__icontains=barcode_to_filter) 
+        else:
+            products = Product.objects.all()
+            
+    context = {    
+        'products': products
+    }
+        
+    return render(request, 'product.html', context)
 
 
 def product_list(request):
@@ -211,3 +206,42 @@ def calc(request):
         return render(request, 'calculator.html', content)
 
     return render(request, 'calculator.html')
+
+
+"""
+def pos(request):
+    # Initialize variables
+
+    cart_total = 0
+    form = PosForm(request.POST or None)
+    products = Product.objects.all()
+    cart_items=Cart.objects.all()  
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')
+        
+        # Process form data here if needed
+        
+    # Populate cart_items with all filtered products
+    for item in cart_items:
+        cart_items.append({
+            'name': product.name,
+            'price_unit': product.price,
+            'quantity2': 1,
+            'total': product.price * 1,
+        })
+    
+    # Calculate cart total
+    cart_total = sum(item['total'] for item in cart_items)    
+
+    context = {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'form': form,
+        'products': products,
+    }
+
+    return render(request, 'pos.html', context)
+"""

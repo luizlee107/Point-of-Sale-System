@@ -36,6 +36,16 @@ class Pos(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Cart(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    group = models.CharField(max_length=100)
+    barcode = models.CharField(max_length=50)
+
+  
     
     
 class Purchase(models.Model):

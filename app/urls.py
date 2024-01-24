@@ -21,7 +21,5 @@ urlpatterns = [
 
     
  
-    path('delete_product/<int:pk>',views.delete_product,name='delete_product'),
-    path('popup_content',views.products2,name='popup_content'),
     path('calculator/',views.calc,name='calc')
 ]

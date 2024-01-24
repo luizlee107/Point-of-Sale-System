@@ -9,6 +9,7 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ['id','name', 'group','barcode','price']
 
+
 class PurchaseForm(forms.ModelForm):
     class Meta:
         model = Purchase
