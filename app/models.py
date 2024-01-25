@@ -6,7 +6,7 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     group = models.CharField(max_length=100)
-    barcode = models.CharField(max_length=50)
+    barcode = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
@@ -43,8 +43,10 @@ class Cart(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     group = models.CharField(max_length=100)
-    barcode = models.CharField(max_length=50)
+    barcode = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.product
   
     
     

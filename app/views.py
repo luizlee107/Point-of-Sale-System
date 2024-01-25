@@ -6,38 +6,51 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+from .models import Product, Cart
 
 def pos(request):
     cart_items = []  # Default value
+    cart_total = 0
 
     if request.method == 'GET':
-        name_to_filter = request.GET.get('name') 
+        name_to_filter = request.GET.get('name')
         barcode_to_filter = request.GET.get('barcode')
-        
+
         if name_to_filter:
             filtered_products = Product.objects.filter(name__icontains=name_to_filter)
+            for product in filtered_products:
+                cart_entry, created = Cart.objects.get_or_create(product=product)
+                if not created:
+                    cart_entry.quantity += 1
+                    cart_entry.save()
+
         elif barcode_to_filter:
             filtered_products = Product.objects.filter(barcode__icontains=barcode_to_filter)
         else:
             filtered_products = Product.objects.all()
 
-        # Assuming you have a Cart model with a ForeignKey to Product
-        for product in filtered_products:
-            cart_entry, created = Cart.objects.get_or_create(product=product)
-            if not created:
-                cart_entry.quantity += 1
-                cart_entry.save()
-
-        # Get the cart items after processing the products
         cart_items = Cart.objects.all()
 
-           
-    context = {    
+    
+        for cart_item in cart_items:
+            cart_item.subtotal = cart_item.quantity * cart_item.product.price
+            cart_total += cart_item.subtotal
+
+    context = {
         'filtered_products': filtered_products,
-        'cart_items': cart_items
+        'cart_items': cart_items,
+        'cart_total': cart_total,
     }
 
     return render(request, 'pos.html', context)
+
+
+def delete_cart(request, pk=None):
+    cart = get_object_or_404(Cart, barcode=pk)
+    cart.delete()
+    return redirect(pos.html)
+  
 
 
 def products_filter(request):
