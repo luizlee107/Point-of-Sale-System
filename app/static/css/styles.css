@@ -17,7 +17,7 @@ body {
 
 /* Header styles */
 header {
-    background-color: #333;
+    background-color:gray;
     color: #fff;
     padding: 1em;
     text-align: center;
@@ -25,7 +25,7 @@ header {
 
 /* Navigation styles */
 nav {
-    background-color: #444;
+    background-color:#333;
     color: #fff;
     padding: 0.5em;
 }
@@ -58,4 +58,41 @@ footer {
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+
+.pos {
+    display: flex;
+}
+
+.left-content {
+    flex-grow: 1;
+    border-radius: 20px; /* Adjust as needed */
+    overflow: hidden;
+    background-color: #f0f0f0; /* Optional: background color */
+}
+
+.filter-input {
+    width: 500px; 
+   
+}
+
+.pos-table {
+
+    text-align:right
+
+}
+
+.right-content {
+
+    width: 300px; /* Adjust the width as needed */
+    border-radius: 20px; /* Adjust as needed */
+    overflow: hidden;
+    background-color: #f0f0f0; /* Optional: background color */
+}
+
+.cart_table {
+  
+    width: 300px 
+
 }

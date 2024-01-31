@@ -43,7 +43,7 @@ class Cart(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     group = models.CharField(max_length=100)
-    barcode = models.PositiveIntegerField()
+  
 
     def __str__(self):
         return self.product

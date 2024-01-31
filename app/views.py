@@ -7,50 +7,8 @@ import json
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from .models import Product, Cart
+from django.db.models import Q
 
-def pos(request):
-    cart_items = []  # Default value
-    cart_total = 0
-
-    if request.method == 'GET':
-        name_to_filter = request.GET.get('name')
-        barcode_to_filter = request.GET.get('barcode')
-
-        if name_to_filter:
-            filtered_products = Product.objects.filter(name__icontains=name_to_filter)
-            for product in filtered_products:
-                cart_entry, created = Cart.objects.get_or_create(product=product)
-                if not created:
-                    cart_entry.quantity += 1
-                    cart_entry.save()
-
-        elif barcode_to_filter:
-            filtered_products = Product.objects.filter(barcode__icontains=barcode_to_filter)
-        else:
-            filtered_products = Product.objects.all()
-
-        cart_items = Cart.objects.all()
-
-    
-        for cart_item in cart_items:
-            cart_item.subtotal = cart_item.quantity * cart_item.product.price
-            cart_total += cart_item.subtotal
-
-    context = {
-        'filtered_products': filtered_products,
-        'cart_items': cart_items,
-        'cart_total': cart_total,
-    }
-
-    return render(request, 'pos.html', context)
-
-
-def delete_cart(request, pk=None):
-    cart = get_object_or_404(Cart, barcode=pk)
-    cart.delete()
-    return redirect(pos.html)
-  
 
 
 def products_filter(request):
@@ -73,16 +31,59 @@ def products_filter(request):
         
     return render(request, 'products_filter.html', context)
 
+def pos(request):
+    cart_items = []  # Default value
+    cart_total = 0
+
+    if request.method == 'GET':
+        search = request.GET.get('name')
+       
+        if search:
+            filtered_products = Product.objects.filter(Q(name__icontains=search) | Q(barcode__icontains=search))
+            for product in filtered_products:
+                print("Processing product:", product.name, "Barcode:", product.barcode)  # Debugging line
+                if product.barcode:  # Check if barcode is not empty
+                    cart_entry, created = Cart.objects.get_or_create(product=product)
+                    if not created:
+                        cart_entry.quantity += 1
+                        cart_entry.save()
+        else:
+            filtered_products = Product.objects.all()
+
+        cart_items = Cart.objects.all()
+
+        for cart_item in cart_items:
+            cart_item.subtotal = cart_item.quantity * cart_item.product.price
+            cart_total += cart_item.subtotal
+
+    context = {
+        'filtered_products': filtered_products,
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+    }
+
+    return render(request, 'pos.html', context)
+
+def cash(request):
+    cart_total = calculate_cart_total()
+    
+    return render(request, 'cash.html', {'cart_total': cart_total})
 
 
+def delete_cart(request, pk=None):
+    cart = get_object_or_404(Cart, id=pk)
+    cart.delete()
+    return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "productListChanged": None,
+                "showMessage": f"{cart.product} deleted."
+            })
+        })
 
-def delete_product(request,pk=None):
-    Product.objects.get(id=pk).delete()
-    return redirect('products2.html')
+  
 
-def update_product(request,pk=None):
-    Product.objects.get(id=pk).delete()
-    return redirect('products2.html')
 
 
 def product(request):
