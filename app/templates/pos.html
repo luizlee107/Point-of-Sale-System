@@ -7,7 +7,7 @@
 
 <div class="pos">
     <div class="left-content">
-    <form class="form-inline mt-2" method="get">
+    <form class="form-inline mt-2" method="get" id="filterForm">
         <div class="form-group mb-2 text-left">
         
          
@@ -80,7 +80,10 @@
             <br>
             <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" required><br>
-
+            <label for="quantity">Descount(%):</label>
+            <input type="number" id="descount" name="descount" required><br>
+            <label for="quantity">Descount(R$):</label>
+            <input type="number" id="descount" name="descount" required><br>
 
             <button type="submit">Add to Cart</button>
 
@@ -88,32 +91,49 @@
 
     </div>
     <div class="right-content">
-        <div class='cart_table'>
+        <div class='cart_table' >
 
         <h1>Cart Items: </h1>
         <ul>
             {% for cart_item in cart_items %}
-                <li>{{ cart_item.product.name }} <br> 
+                <li>{{cart_item.product.barcode}} - {{ cart_item.product.name }} <br> 
                     {{ cart_item.quantity }} UN x {{cart_item.product.price}} = {{cart_item.subtotal}}</li>
-                    <a href="{% url 'delete_cart' pk=cart_item.product.name %}" class="btn btn-danger btn-sm">
+                    <a href="{% url 'delete_cart' pk=cart_item.product.id %}" class="btn btn-danger btn-sm">
                         <i class="fa fa-trash"> x </i>
                     </a>
 
                     {% endfor %}
-                    <h1>TOTAL: {{cart_total}} </h1>
+     
+                  
         </ul>
       </div>
- 
+      <br>
+      <br>
+      <br>
+      <br>
+    <div class='cart_total'>
+      <h1>TOTAL: {{cart_total}} </h1>
+    </div>
         <button hx-get="{% url 'cash' %}" hx-target="#dialog" class="btn btn-primary">
-            Cash
+            Cash - F2
         </button>
-        <button type="submit" name="payment_type" value="card">Card</button>
+        <button hx-get="{% url 'card' %}" hx-target="#dialog" class="btn btn-primary">
+            Card - F4
+        </button>
+        <a  href="{% url 'delete_cart_all' %}" class="btn btn-primary">
+            Clean Cart
+        </a>
+      
         <br>
         <br>
 
     </div>
 
     </div>
+    <button type="submit">Troca</button>
+    <button type="submit">Devolução</button>
+    <button type="submit">Outras Opções</button>
+    <button type="submit">?</button>
 
 
 {% endblock %}

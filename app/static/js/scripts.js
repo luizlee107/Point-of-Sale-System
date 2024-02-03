@@ -34,3 +34,16 @@
       toast.show()
     })
   })()
+
+
+
+  document.getElementById('filterForm').addEventListener('submit', function(event) {
+    // Prevent default form submission behavior
+    event.preventDefault();
+
+    // Reload the page or redirect to the same page
+    window.location.href = window.location.href;
+});
+
+
+

@@ -44,6 +44,7 @@ def pos(request):
                 print("Processing product:", product.name, "Barcode:", product.barcode)  # Debugging line
                 if product.barcode:  # Check if barcode is not empty
                     cart_entry, created = Cart.objects.get_or_create(product=product)
+                    
                     if not created:
                         cart_entry.quantity += 1
                         cart_entry.save()
@@ -51,10 +52,13 @@ def pos(request):
             filtered_products = Product.objects.all()
 
         cart_items = Cart.objects.all()
+  
 
         for cart_item in cart_items:
+       
             cart_item.subtotal = cart_item.quantity * cart_item.product.price
             cart_total += cart_item.subtotal
+            
 
     context = {
         'filtered_products': filtered_products,
@@ -64,25 +68,27 @@ def pos(request):
 
     return render(request, 'pos.html', context)
 
+
 def cash(request):
-    cart_total = calculate_cart_total()
+    cart_total = Cart(product)
     
     return render(request, 'cash.html', {'cart_total': cart_total})
 
+def card(request):
+    cart_total = Cart(product)
+    
+    return render(request, 'card.html', {'cart_total': cart_total})
+
 
 def delete_cart(request, pk=None):
-    cart = get_object_or_404(Cart, id=pk)
+    cart = get_object_or_404(Cart, product_id=pk)
     cart.delete()
-    return HttpResponse(
-        status=204,
-        headers={
-            'HX-Trigger': json.dumps({
-                "productListChanged": None,
-                "showMessage": f"{cart.product} deleted."
-            })
-        })
+    return redirect('pos')
 
-  
+def delete_cart_all(request):
+    Cart.objects.all().delete()  
+    return redirect('pos')
+      
 
 
 

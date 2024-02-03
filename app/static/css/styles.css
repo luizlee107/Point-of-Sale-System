@@ -70,10 +70,12 @@ footer {
     border-radius: 20px; /* Adjust as needed */
     overflow: hidden;
     background-color: #f0f0f0; /* Optional: background color */
+    width: 300px;
+
 }
 
 .filter-input {
-    width: 500px; 
+    width: 200px; 
    
 }
 
@@ -91,8 +93,15 @@ footer {
     background-color: #f0f0f0; /* Optional: background color */
 }
 
-.cart_table {
-  
-    width: 300px 
 
+
+.cart_table {
+    overflow-y:auto;
+    max-height:400px;
+    width: 500px 
+
+}
+
+.cart_total {
+    background-color: #c9c6c6
 }
