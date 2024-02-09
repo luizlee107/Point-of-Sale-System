@@ -1,25 +1,31 @@
 {% load widget_tweaks %}
 {% with WIDGET_ERROR_CLASS='is-invalid' %}
 
-<form hx-get="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content">
- 
+<form hx-get="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' method="post" class="modal-content">
+    {% csrf_token %}
     <div class="modal-header">
         <h5 class="modal-title">Cash</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-        <div class="modal-body">
-        
-                <label for="cash" class="sr-only">R$</label>
-                <input type="text" class="form-control" id="cash" name="name" placeholder=''>
-            
-               
+    <div class="modal-body">
+        <div class="mb-3">
+            <label for="cart_total" class="form-label">Total Amount: </label>
+            <input type="text" id="cart_total" name="cart_total" class="form-control" value="{{ cart_total }}" placeholder="Enter Total Amount">
+        </div>
+        <h5 for="total">Total:&nbsp;&nbsp;&nbsp;{{cart_total}}</h5>
+
+        {% if cash != cart_total %}
+        <h5 for="cash">Cash:&nbsp;&nbsp;&nbsp;{{ cash }}</h5>
+        {% endif %}
+
+        {% if change != 0%}
+        <h5 for="change">Change:&nbsp;&nbsp;&nbsp;{{change}}</h5>
+        {% endif %}
 
 
+    </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        Cancel
-        </button>
-
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary">Save</button>
     </div>
 </form>

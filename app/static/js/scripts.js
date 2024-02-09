@@ -47,3 +47,36 @@
 
 
 
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Get the cash button and modal
+  const cashButton = document.getElementById("cashButton");
+  const cashModal = document.getElementById("cashModal");
+
+  // Add event listener to the cash button
+  cashButton.addEventListener("click", function() {
+    // Calculate total money
+    const totalMoney = calculateTotalMoney();
+
+    // Update modal content with total money
+    const totalMoneySpan = cashModal.querySelector("#totalMoney");
+    totalMoneySpan.textContent = totalMoney;
+
+    // Show the modal
+    $(cashModal).modal("show");
+  });
+
+  // Function to calculate total money
+  function calculateTotalMoney() {
+    // Replace this with your actual calculation logic
+    let totalMoney = 0;
+
+    // Sum all the cart items
+    document.querySelectorAll(".cart-item").forEach(function(item) {
+      const subtotal = parseFloat(item.dataset.subtotal);
+      totalMoney += subtotal;
+    });
+
+    return totalMoney.toFixed(2); // Adjust to the appropriate number of decimal places
+  }
+});

@@ -18,6 +18,7 @@ class Sale(models.Model):
     product_list = models.CharField(max_length=1000)
     total_sale = models.DecimalField(max_digits=10, decimal_places=2)
     total_items = models.PositiveIntegerField()
+    date = models.DateField(auto_now_add=True,null=True,blank=True) 
     
     def __str__(self):
         return self.sale_code
@@ -39,6 +40,7 @@ class Pos(models.Model):
 
 
 class Cart(models.Model):
+    
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
   
     quantity = models.PositiveIntegerField(default=1)

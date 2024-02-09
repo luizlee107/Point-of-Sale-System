@@ -34,6 +34,7 @@ def products_filter(request):
 def pos(request):
     cart_items = []  # Default value
     cart_total = 0
+    total_items = 0
 
     if request.method == 'GET':
         search = request.GET.get('name')
@@ -41,7 +42,7 @@ def pos(request):
         if search:
             filtered_products = Product.objects.filter(Q(name__icontains=search) | Q(barcode__icontains=search))
             for product in filtered_products:
-                print("Processing product:", product.name, "Barcode:", product.barcode)  # Debugging line
+                
                 if product.barcode:  # Check if barcode is not empty
                     cart_entry, created = Cart.objects.get_or_create(product=product)
                     
@@ -58,21 +59,55 @@ def pos(request):
        
             cart_item.subtotal = cart_item.quantity * cart_item.product.price
             cart_total += cart_item.subtotal
+            total_items += cart_item.quantity
+
             
+
 
     context = {
         'filtered_products': filtered_products,
         'cart_items': cart_items,
         'cart_total': cart_total,
+        'total_items':total_items
     }
 
     return render(request, 'pos.html', context)
 
 
 def cash(request):
-    cart_total = Cart(product)
+    if request.method == 'GET':
+        cash = request.GET.get('cart_total')
+
+    cart_items = Cart.objects.all()
+    cart_total = 0
+    total_items = 0
+
+    cart_items = Cart.objects.all()
+
+    for cart_item in cart_items:
+       
+        cart_item.subtotal = cart_item.quantity * cart_item.product.price
+        cart_total += cart_item.subtotal
+        total_items += cart_item.quantity
+        
+    if cash is None:
+        cash=cart_total
+        change=0
+    else:    
+        change=float(cash)-float(cart_total)
+
+
+
+    content = {
+        'change':change,
+        'cash':cash,
+        'cart_total':cart_total
+    }
     
-    return render(request, 'cash.html', {'cart_total': cart_total})
+    return render(request, 'cash.html', content)
+
+
+
 
 def card(request):
     cart_total = Cart(product)

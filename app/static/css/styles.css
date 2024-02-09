@@ -70,12 +70,14 @@ footer {
     border-radius: 20px; /* Adjust as needed */
     overflow: hidden;
     background-color: #f0f0f0; /* Optional: background color */
-    width: 300px;
+    width: 100%;
+    max-width:400px;
+    height: 60vh
 
 }
 
 .filter-input {
-    width: 200px; 
+    width: 100px; 
    
 }
 
@@ -86,8 +88,8 @@ footer {
 }
 
 .right-content {
-
-    width: 300px; /* Adjust the width as needed */
+    height: 70vh;
+    width: 30%; /* Adjust the width as needed */
     border-radius: 20px; /* Adjust as needed */
     overflow: hidden;
     background-color: #f0f0f0; /* Optional: background color */
