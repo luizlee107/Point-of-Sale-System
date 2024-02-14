@@ -37,18 +37,29 @@ def pos(request):
     total_items = 0
 
     if request.method == 'GET':
-        search = request.GET.get('name')
+        search = request.GET.get('barcode')
        
         if search:
-            filtered_products = Product.objects.filter(Q(name__icontains=search) | Q(barcode__icontains=search))
-            for product in filtered_products:
-                
-                if product.barcode:  # Check if barcode is not empty
-                    cart_entry, created = Cart.objects.get_or_create(product=product)
+            filtered_products = Product.objects.filter(barcode__exact=search)
+            
+            if filtered_products is None:
+                return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        "productListChanged": None,
+                        "showMessage": f" Product not found it."
+                    })
+                })
+            else:
+                for product in filtered_products:
                     
-                    if not created:
-                        cart_entry.quantity += 1
-                        cart_entry.save()
+                    if product.barcode:  # Check if barcode is not empty
+                        cart_entry, created = Cart.objects.get_or_create(product=product)
+                        
+                        if not created:
+                            cart_entry.quantity += 1
+                            cart_entry.save()
         else:
             filtered_products = Product.objects.all()
 
@@ -96,8 +107,6 @@ def cash(request):
     else:    
         change=float(cash)-float(cart_total)
 
-
-
     content = {
         'change':change,
         'cash':cash,
@@ -105,8 +114,6 @@ def cash(request):
     }
     
     return render(request, 'cash.html', content)
-
-
 
 
 def card(request):
@@ -124,6 +131,40 @@ def delete_cart_all(request):
     Cart.objects.all().delete()  
     return redirect('pos')
       
+
+
+def receipt(request):
+    if request.method == 'GET':
+        cash = request.GET.get('cart_total')
+
+    cart_items = Cart.objects.all()
+    cart_total = 0
+    total_items = 0
+
+    cart_items = Cart.objects.all()
+
+    for cart_item in cart_items:
+       
+        cart_item.subtotal = cart_item.quantity * cart_item.product.price
+        cart_total += cart_item.subtotal
+        total_items += cart_item.quantity
+        
+    if cash is None:
+        cash=cart_total
+        change=0
+    else:    
+        change=float(cash)-float(cart_total)
+
+    content = {
+        'total_items':total_items,
+        'change':change,
+        'cash':cash,
+        'cart_total':cart_total,
+        'cart_items':cart_items
+    }
+    
+    return render(request, 'receipt.html', content)
+
 
 
 

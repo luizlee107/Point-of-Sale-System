@@ -56,3 +56,12 @@ ul {
 .calculation {
     font-size: 15px;
 }
+
+
+.receipt {
+    width: 80mm; /* Set width to 80mm */
+    height: 40mm; /* Set height to 40mm */
+    margin: 5mm; /* Set margins to 5mm */
+    border: 1px solid black; /* Optional: border for visualization */
+    padding: 5mm; /* Optional: padding for content */
+}

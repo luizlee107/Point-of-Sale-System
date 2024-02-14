@@ -71,7 +71,7 @@ footer {
     overflow: hidden;
     background-color: #f0f0f0; /* Optional: background color */
     width: 100%;
-    max-width:400px;
+    max-width:500px;
     height: 60vh
 
 }
@@ -89,7 +89,7 @@ footer {
 
 .right-content {
     height: 70vh;
-    width: 30%; /* Adjust the width as needed */
+    width: 50%; /* Adjust the width as needed */
     border-radius: 20px; /* Adjust as needed */
     overflow: hidden;
     background-color: #f0f0f0; /* Optional: background color */

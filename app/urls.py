@@ -17,10 +17,14 @@ urlpatterns = [
     path('product/<int:pk>/edit', views.edit_product, name='edit_product'),
     path('products/filter',views.products_filter,name='products_filter'),
     
+
+  
     path('pos/card',views.card,name='card'),
     path('pos/cash',views.cash,name='cash'),
     path('cart/<str:pk>/delete',views.delete_cart,name='delete_cart'),
     path('cart/delete_all',views.delete_cart_all,name='delete_cart_all'),
- 
+    path('cart/receipt',views.receipt,name='receipt'),
+
+
     path('calculator/',views.calc,name='calc')
 ]
