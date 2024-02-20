@@ -1,23 +1,34 @@
 {% load widget_tweaks %}
 {% with WIDGET_ERROR_CLASS='is-invalid' %}
-
-<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content">
-  
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' hx-target="#modal" class="modal-content">
   <div class="modal-header">
     <h5 class="modal-title">Edit Product</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
   <div class="modal-body">
+
+ 
     <div class="mb-3">
-      <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
-      {% render_field form.name class="form-control" placeholder="Product" %}
-      <div class="invalid-feedback">{{ form.name.errors|first }}</div>
+      <label for="form" class="form-label">Name</label>
+      <input type="text" id="cart" name="cart" class="form-control" value="{{ form.name}}" placeholder="{{ form.name}}" readonly>
     </div>
+
     <div class="mb-3">
-      <label for="{{ form.group.id_for_label }}" class="form-label">Group</label>
-      {% render_field form.group class="form-control" placeholder="Group" %}
-      <div class="invalid-feedback">{{ form.group.errors|first }}</div>
-    </div>  
+      <label for="cart" class="form-label">Name</label>
+      <input type="text" id="cart" name="cart" class="form-control" value="{{ cart.product.name}}" placeholder="{{ cart.product.name}}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label for="cart" class="form-label">Barcode</label>
+      <input type="text" id="cart" name="cart" class="form-control" value="{{ cart.product.barcode}}" placeholder="{{ cart.product.barcode}}" readonly>
+    </div>
+ 
+    <div class="mb-3">
+      <label for="cart" class="form-label">Price</label>
+      <input type="text" id="cart" name="cart" class="form-control" value="{{ cart.product.price}}" placeholder="{{ cart.product.price}}" price>
+    </div>
+ 
+
     <div class="mb-3">
         <label for="{{ form.barcode.id_for_label }}" class="form-label">Barcode</label >
         {% render_field form.barcode class="form-control" %}
@@ -31,7 +42,7 @@
   </div>
   <div class="modal-footer">
     {% if product %}
-    <button type="button" class="btn btn-danger" hx-post="{% url 'remove_product' pk=product.pk %}">Remove</button>
+    <button type="button" class="btn btn-danger" hx-post="{% url 'delete_cart' pk=cart_item.product.id %}">Remove</button>
     <span class="flex-grow-1"></span>
     {% endif %}
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

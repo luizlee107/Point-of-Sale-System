@@ -24,7 +24,7 @@ class PurchaseForm(forms.ModelForm):
 class SaleForm(forms.ModelForm):
     class Meta:
         model = Sale
-        fields = ['sale_code', 'product_list','total_sale','total_items']
+        fields = ['sale_code', 'product_list','total_sale','total_items','cash','change']
         
         
 class PosForm(forms.ModelForm):

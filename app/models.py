@@ -18,6 +18,9 @@ class Sale(models.Model):
     product_list = models.CharField(max_length=1000)
     total_sale = models.DecimalField(max_digits=10, decimal_places=2)
     total_items = models.PositiveIntegerField()
+    cash = models.DecimalField(max_digits =10, decimal_places=2, default=0.00)
+    change = models.DecimalField(max_digits =10, decimal_places=2, default=0.00)
+
     date = models.DateField(auto_now_add=True,null=True,blank=True) 
     
     def __str__(self):

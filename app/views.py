@@ -20,10 +20,11 @@ def products_filter(request):
         if name_to_filter:
             products = Product.objects.filter(name__icontains=name_to_filter) 
         elif barcode_to_filter:
-            products = Product.objects.filter(barcode__icontains=barcode_to_filter) 
+            products = Product.objects.filter(barcode__exact=barcode_to_filter) 
         else:
             products = Product.objects.all()
             
+                        
             
     context = {    
         'products': products
@@ -107,6 +108,13 @@ def cash(request):
     else:    
         change=float(cash)-float(cart_total)
 
+    sale = Sale.objects.create(
+        total_sale=cart_total,
+        total_items=total_items,
+        cash=cash,
+        change=change
+    )
+
     content = {
         'change':change,
         'cash':cash,
@@ -130,8 +138,29 @@ def delete_cart(request, pk=None):
 def delete_cart_all(request):
     Cart.objects.all().delete()  
     return redirect('pos')
-      
 
+
+
+def edit_cart(request, pk=None):
+    cart = get_object_or_404(Cart, product_id=pk)
+    if request.method == "POST":
+        form = CartForm(request.POST, instance=cart)
+        if form.is_valid():
+            form.save()
+            # Return a JSON response with success message
+            return JsonResponse({
+                "productListChanged": None,
+                "showMessage": f"{cart.product.name} updated."
+            })
+    else:
+        form = CartForm(instance=cart)
+
+    content = {
+        'form': form,
+        'cart': cart,
+
+    }   
+    return render(request, 'cart_form.html', content)
 
 def receipt(request):
     if request.method == 'GET':
