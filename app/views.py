@@ -145,6 +145,7 @@ def edit_cart(request, pk=None):
     cart = get_object_or_404(Cart, product_id=pk)
     if request.method == "POST":
         form = CartForm(request.POST, instance=cart)
+        
         if form.is_valid():
             form.save()
             # Return a JSON response with success message
@@ -154,6 +155,7 @@ def edit_cart(request, pk=None):
             })
     else:
         form = CartForm(instance=cart)
+   
 
     content = {
         'form': form,
