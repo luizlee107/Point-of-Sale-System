@@ -51,7 +51,7 @@
             {% csrf_token %}
             <label for="num1">Enter a calculation:</label>
             <input type="text" name="num1" id="num1" required>
-            <button type="submit">Calculate</button>           
+       
 
         </form>
         <br>
@@ -80,7 +80,7 @@
                 <ul id="calculationSteps"></ul>
                 <p>--------------------------------------------------------------------</p>
              
-                <h3 id="result">TOTAL R$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+result</h3>
+                <h3 id="result">TOTAL R$ 0</h3>
             </div>
             <p>--------------------------------------------------------------------</p>
             <p>OBRIGADO PELA PREFERENCIA</p>
@@ -101,6 +101,7 @@
 
         function calculate() {
             var input = document.getElementById('num1').value;
+            input = input.replace('++','+')
             input = input.replace(/,/g, '.'); // Replace all commas with dots
             var steps = input.split(/[+\-*/]/).map(function(step) {
                 return parseFloat(step.trim()).toFixed(2);
