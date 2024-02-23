@@ -55,8 +55,8 @@
 
         </form>
         <br>
-        
-        
+     
+
     
         <div id="content" class="print-hidden">
         <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
@@ -73,13 +73,15 @@
         
     </div>
         <div class="calculation">
-            <ul>
-                {% for step in calculation_steps %}
-                    <li>{{ step }}</li>
-                {% endfor %}
-            </ul>
-            <p>--------------------------------------------------------------------</p>
-            <h3>TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ result }}</h3>
+
+         
+             
+            <div class="calculation">
+                <ul id="calculationSteps"></ul>
+                <p>--------------------------------------------------------------------</p>
+             
+                <h3 id="result">TOTAL R$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+result</h3>
+            </div>
             <p>--------------------------------------------------------------------</p>
             <p>OBRIGADO PELA PREFERENCIA</p>
             <p>VOLTE SEMPRE</p>
@@ -87,6 +89,38 @@
          </div>
 
     <script>
+
+        document.getElementById('calcForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            calculate();
+        });
+
+        document.getElementById('num1').addEventListener('input', function() {
+            calculate();
+        });
+
+        function calculate() {
+            var input = document.getElementById('num1').value;
+            input = input.replace(/,/g, '.'); // Replace all commas with dots
+            var steps = input.split(/[+\-*/]/).map(function(step) {
+                return parseFloat(step.trim()).toFixed(2);
+            });
+            var result = eval(input);
+        
+            var calculationSteps = document.getElementById('calculationSteps');
+            calculationSteps.innerHTML = '';
+            steps.forEach(function(step) {
+                var li = document.createElement('li');
+                li.textContent = step;
+                calculationSteps.appendChild(li);
+            });
+        
+            // Format the result to display two decimal places
+            var formattedResult = parseFloat(result).toFixed(2);
+            document.getElementById('result').textContent = 'TOTAL R$ ' + formattedResult;
+        }
+
+
         function toggleForm() {
             var form = document.getElementById('calcForm');
             var content = document.getElementById('content');

@@ -289,15 +289,13 @@ def calc(request):
         string = str(request.POST['num1'])
         result = 0.00
 
-        # Initialize a variable to store the current number
         current_number = ''
-        # Initialize a variable to store the current operation  
+        
         current_operation = '+'
         calculation_steps = []
-
-        for i in string:
-            if i == ',':
-                i = '.'  
+        string=string.replace('++','+')
+        string=string.replace(',','.')
+        for i in string:         
             if i.isdigit() or i == '.':
                 current_number += i
             elif i in ['+', '-', '*']:

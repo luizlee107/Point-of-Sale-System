@@ -1,17 +1,14 @@
 
-a=[]
-b=' '
-while b != 'N':
-    num=int(input('Digit a number: '))
-    if num not in a:
-        a.append(num)
-    else:
-        print('The number is duplicate.I wil not add the value.')
-         
-    b=input('Do u want to continue:[Y/N] ').upper().strip()[0]
-    while b not in 'YN':
-        b=input('Do u want to continue:[Y/N] ').upper().strip()[0]   
+list=[]
+a=input('digit string:')
 
-a.sort()
+s=a.replace('++','+')
+print(s)
 
-print(f'You type the follow values: {a}')
+# for i in a:
+    
+#     list.append(i)
+#     print(i)
+# print(list)
+
+
