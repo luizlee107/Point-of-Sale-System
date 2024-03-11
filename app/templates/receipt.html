@@ -1,0 +1,67 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Receipt</title>
+        <link rel="stylesheet" href="{% static 'css/calculator.css' %}">
+   
+</head>
+<body>
+ 
+    <div class="receipt">
+    
+
+        <p>WEELEE DOCES</p>
+        <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
+        <p>SAO PAULO-SP, CEP: 03014-000</p>
+        <p>--------------------------------------------------------------------</p>
+        <p>CUPOM DE CONTROLE</p>
+        <p>--------------------------------------------------------------------</p>
+        <p id="dateTime"> Cx: 001 Op: 001 </p>
+        <p>--------------------------------------------------------------------</p>
+        
+        </div>
+
+        
+    </div>
+        <div class="receipt">
+  
+            <ul>
+                {% for cart_item in cart_items %}
+                    <li>{{cart_item.product.barcode}} - {{ cart_item.product.name }}    -   
+                
+                        {{ cart_item.quantity }} UN x {{cart_item.product.price}} = {{cart_item.subtotal}}
+                
+                    </li>
+                     
+                     
+                        {% endfor %}
+         
+                      
+            </ul>
+            <p>--------------------------------------------------------------------</p>
+            <h3>Qtde total de itens R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ total_items }}</h3>
+            <h3>VALOR TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</h3>
+            <h3>DINHEIRO R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</h3>
+            <h3>TROCO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ change }}</h3>
+            <p>--------------------------------------------------------------------</p>
+            <p>OBRIGADO PELA PREFERENCIA</p>
+            <p>VOLTE SEMPRE</p>
+            <p>--------------------------------------------------------------------</p>
+         </div>
+
+         <script>
+            // JavaScript code to trigger print dialog
+            window.onload = function() {
+                window.print();
+            }
+        </script>
+
+
+</body>
+</html>
