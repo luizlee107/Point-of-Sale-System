@@ -108,16 +108,19 @@ def cash(request):
         change=float(cash)-float(cart_total)
 
     sale = Sale.objects.create(
+        sale_code=0,
+        product_list='anything',
         total_sale=cart_total,
         total_items=total_items,
         cash=cash,
         change=change
     )
 
+    print(sale.change)
     content = {
-        'change':change,
-        'cash':cash,
-        'cart_total':cart_total
+        'change':sale.change,
+        'cash':sale.cash,
+        'cart_total':sale.total_sale
     }
     
     return render(request, 'cash.html', content)
