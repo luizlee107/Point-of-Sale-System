@@ -21,7 +21,7 @@
         {% if change != 0%}
         <h5 for="change">Change:&nbsp;&nbsp;&nbsp;{{change}}</h5>
         {% endif %}
-
+        <h3 id="total"></h3>
 
     </div>
     <div class="modal-footer">
@@ -34,4 +34,17 @@
     </div>
 </form>
 
+
+<script>
+    document.getElementById('cart_total').addEventListener('input', function() {
+        calculate();
+    });
+
+    function calculate() {
+        var input = document.getElementById('cart_total').value;
+        var formattedResult = 
+        document.getElementById('total').textContent =  'alguma'+input;
+    }
+
+</script>
 {% endwith %}
