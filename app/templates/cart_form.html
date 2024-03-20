@@ -11,19 +11,25 @@
  
 
     <div class="mb-3">
-      <label for="cart" class="form-label">Name</label>
-      <input type="text" id="cart" name="cart" class="form-control" value="{{ cart.product.name}}" placeholder="{{ cart.product.name}}" readonly>
+      <label for="name" class="form-label">Name</label>
+      <input type="text" id="name" name="name" class="form-control" value="{{ cart.product.name }}" placeholder="{{ cart.product.name }}" readonly>
     </div>
 
     <div class="mb-3">
-      <label for="cart" class="form-label">Barcode</label>
-      <input type="text" id="cart" name="cart" class="form-control" value="{{ cart.product.barcode}}" placeholder="{{ cart.product.barcode}}" readonly>
+      <label for="barcode" class="form-label">Barcode</label>
+      <input type="text" id="barcode" name="barcode" class="form-control" value="{{ cart.product.barcode }}" placeholder="{{ cart.product.barcode }}" readonly>
+    </div>
+    
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Quantity</label>
+      <input type="text" id="quantity" name="quantity" class="form-control" value="{{ cart.quantity }}" placeholder="{{ cart.quantity }}" price>
+    </div>
+    
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input type="text" id="price" name="price" class="form-control" value="{{ cart.price }}" placeholder="{{ cart.price }}" price>
     </div>
  
-    <div class="mb-3">
-      <label for="cart" class="form-label">Price</label>
-      <input type="text" id="cart" name="cart" class="form-control" value="{{ cart.product.price}}" placeholder="{{ cart.product.price}}" price>
-    </div>
  
 
   <div class="modal-footer">

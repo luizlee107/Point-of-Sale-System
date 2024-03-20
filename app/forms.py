@@ -12,7 +12,7 @@ class ProductForm(forms.ModelForm):
 class CartForm(forms.ModelForm):
     class Meta:
         model = Cart
-        fields = ['product','quantity','group','price']
+        fields = ['quantity','price']
 
 
 class PurchaseForm(forms.ModelForm):

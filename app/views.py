@@ -60,9 +60,14 @@ def pos(request):
                         
                         if not created:
                             cart_entry.quantity += 1
+                            
                             cart_entry.save()
+                    cart_entry.price = product.price
+                    cart_entry.save()
+                    
         else:
             filtered_products = Product.objects.all()
+
 
         cart_items = Cart.objects.all()
   
@@ -97,7 +102,7 @@ def cash(request):
 
     for cart_item in cart_items:
        
-        cart_item.subtotal = cart_item.quantity * cart_item.product.price
+        cart_item.subtotal = cart_item.quantity * cart_item.price
         cart_total += cart_item.subtotal
         total_items += cart_item.quantity
         
@@ -144,7 +149,7 @@ def delete_cart_all(request):
 
 
 def edit_cart(request, pk=None):
-    cart = get_object_or_404(Cart, product_id=pk)
+    cart = get_object_or_404(Cart, id=pk)
     if request.method == "POST":
         form = CartForm(request.POST, instance=cart)
         
@@ -155,6 +160,10 @@ def edit_cart(request, pk=None):
                 "productListChanged": None,
                 "showMessage": f"{cart.product.name} updated."
             })
+        else:
+            print(form.errors)
+            # Return a JsonResponse with form errors
+            return JsonResponse({"errors": form.errors}, status=400)
     else:
         form = CartForm(instance=cart)
    
@@ -165,6 +174,7 @@ def edit_cart(request, pk=None):
 
     }   
     return render(request, 'cart_form.html', content)
+
 
 def receipt(request):
     if request.method == 'GET':
