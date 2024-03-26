@@ -74,11 +74,10 @@ def pos(request):
 
         for cart_item in cart_items:
        
-            cart_item.subtotal = cart_item.quantity * cart_item.product.price
+            cart_item.subtotal = cart_item.quantity * cart_item.price
             cart_total += cart_item.subtotal
             total_items += cart_item.quantity
            
-
 
     context = {
         'filtered_products': filtered_products,
@@ -99,7 +98,6 @@ def cash(request):
     total_items = 0
 
     cart_items = Cart.objects.all()
-
     for cart_item in cart_items:
        
         cart_item.subtotal = cart_item.quantity * cart_item.price
@@ -125,7 +123,8 @@ def cash(request):
     content = {
         'change':sale.change,
         'cash':sale.cash,
-        'cart_total':sale.total_sale
+        'cart_total':sale.total_sale,
+        'cart_items':cart_items
     }
     
     return render(request, 'cash.html', content)

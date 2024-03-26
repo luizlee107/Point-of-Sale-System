@@ -81,28 +81,3 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-
-
-// AJAX for filtering products
-$(document).ready(function() {
-  $('#filterBtn').click(function() {
-    var filterValue = $('#filterBarcode').val();
-    $.ajax({
-      url: '{% url 'pos' %}',
-      type: 'GET',
-      data: {
-        'barcode': filterValue
-      },
-      success: function(data) {
-        $('#productTableBody').html(data);
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.error("AJAX Error:", textStatus, errorThrown);
-      }
-    });
-  });
-
-  $('#saveBtn').click(function() {
-    $('#filterForm').submit();
-  });
-});

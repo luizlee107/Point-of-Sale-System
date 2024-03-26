@@ -1,38 +1,71 @@
+{% load static %}
 {% load widget_tweaks %}
 {% with WIDGET_ERROR_CLASS='is-invalid' %}
 
-<form hx-get="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' method="post" class="modal-content">
-    {% csrf_token %}
-    <div class="modal-header">
-        <h5 class="modal-title">Cash</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <div class="mb-3">
-            <label for="cart_total" class="form-label">Total Amount: </label>
-            <input type="text" id="cart_total" name="cart_total" class="form-control" value="{{ cart_total }}" placeholder="Enter Total Amount">
+
+    <form hx-get="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' method="post" class="modal-content">
+          
+        {% csrf_token %}
+        <div class="modal-header">
+            <h5 class="modal-title">Cash</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <h5 for="total">Total:&nbsp;&nbsp;&nbsp;{{cart_total}}</h5>
-
-        {% if cash != cart_total %}
-        <h5 for="cash">Cash:&nbsp;&nbsp;&nbsp;{{ cash }}</h5>
-        {% endif %}
-
-        {% if change != 0%}
-        <h5 for="change">Change:&nbsp;&nbsp;&nbsp;{{change}}</h5>
-        {% endif %}
-        <h3 id="total"></h3>
-
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a href="{% url 'receipt' %}" target="_blank">
-        <button  type="button" class="btn btn-secondary">Print Receipt-F9</button>
-        </a>
-        <button type="submit" class="btn btn-primary">Save</button>
       
+        <div class="cash">
+         
+        <div class="modal-right">
+            <div class="mb-3">
+                <label for="cart_total" class="form-label">Total Amount:</label>
+                <input type="text" id="cart_total" name="cart_total" class="form-control" value="{{ cart_total }}" placeholder="Enter Total Amount">
+            </div>
+            <h5>Total:&nbsp;&nbsp;&nbsp;{{cart_total}}</h5>
+            {% if cash != cart_total %}
+            <h5>Cash:&nbsp;&nbsp;&nbsp;{{ cash }}</h5>
+            {% endif %}
+            {% if change != 0 %}
+            <h5>Change:&nbsp;&nbsp;&nbsp;{{change}}</h5>
+            {% endif %}
+            <h3 id="total"></h3>
+        
+        </div>
+        <div class="receipt2">
+            <br>
+            <p>WEELEE DOCES</p>
+            <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
+            <p>SAO PAULO-SP, CEP: 03014-000</p>
+            <p>--------------------------------------------------------------------</p>
+            <p>CUPOM DE CONTROLE</p>
+            <p>--------------------------------------------------------------------</p>
+            <p id="dateTime"> Cx: 001 Op: 001 </p>
+            <p>--------------------------------------------------------------------</p>
+            <ul>
+                {% for cart_item in cart_items %}
+                <li>{{cart_item.product.barcode}} - {{ cart_item.product.name }} - {{ cart_item.quantity }} UN x {{cart_item.product.price}} = {{cart_item.subtotal}}</li>
+                {% endfor %}
+            </ul>
+            <p>--------------------------------------------------------------------</p>
+            <h6>Qtde total de itens R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ total_items }}</h6>
+            <h6>VALOR TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</h6>
+            <h6>DINHEIRO R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cash }}</h6>
+            <h6>TROCO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ change }}</h6>
+            <p>--------------------------------------------------------------------</p>
+            <p>OBRIGADO PELA PREFERENCIA</p>
+            <p>VOLTE SEMPRE</p>
+            <p>--------------------------------------------------------------------</p>
+        </div>
+    
+    
     </div>
-</form>
+ 
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a href="{% url 'receipt' %}" target="_blank">
+                <button type="button" class="btn btn-secondary">Print Receipt-F9</button>
+            </a>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+
+    </form>
 
 
 <script>
@@ -41,10 +74,9 @@
     });
 
     function calculate() {
-        var input = document.getElementById('cart_total').value;
-        var formattedResult = 
-        document.getElementById('total').textContent =  'alguma'+input;
+        var input = parseFloat(document.getElementById('cart_total').value);
+        var formattedResult = input.toFixed(2); // Format to two decimal places
+        document.getElementById('total').textContent = 'Total: R$ ' + formattedResult;
     }
-
 </script>
 {% endwith %}
