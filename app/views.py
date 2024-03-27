@@ -17,6 +17,7 @@ def products_filter(request):
         name_to_filter = request.GET.get('name') 
         barcode_to_filter = request.GET.get('barcode')
         
+        
         if name_to_filter:
             products = Product.objects.filter(name__icontains=name_to_filter) 
         elif barcode_to_filter:
@@ -39,11 +40,13 @@ def pos(request):
 
     if request.method == 'GET':
         search = request.GET.get('barcode')
-       
+
         if search:
+            
             filtered_products = Product.objects.filter(barcode__exact=search)
             
             if filtered_products is None:
+
                 return HttpResponse(
                 status=204,
                 headers={
@@ -64,7 +67,7 @@ def pos(request):
                             cart_entry.save()
                     cart_entry.price = product.price
                     cart_entry.save()
-                    
+                    return redirect('pos')
         else:
             filtered_products = Product.objects.all()
 
@@ -124,7 +127,8 @@ def cash(request):
         'change':sale.change,
         'cash':sale.cash,
         'cart_total':sale.total_sale,
-        'cart_items':cart_items
+        'cart_items':cart_items,
+        'total_items':total_items,
     }
     
     return render(request, 'cash.html', content)
@@ -134,16 +138,6 @@ def card(request):
     cart_total = Cart(product)
     
     return render(request, 'card.html', {'cart_total': cart_total})
-
-
-def delete_cart(request, pk=None):
-    cart = get_object_or_404(Cart, product_id=pk)
-    cart.delete()
-    return redirect('pos')
-
-def delete_cart_all(request):
-    Cart.objects.all().delete()  
-    return redirect('pos')
 
 
 
@@ -159,20 +153,30 @@ def edit_cart(request, pk=None):
                 "productListChanged": None,
                 "showMessage": f"{cart.product.name} updated."
             })
+            
         else:
             print(form.errors)
             # Return a JsonResponse with form errors
             return JsonResponse({"errors": form.errors}, status=400)
     else:
         form = CartForm(instance=cart)
-   
-
     content = {
         'form': form,
         'cart': cart,
 
     }   
-    return render(request, 'cart_form.html', content)
+    return render(request, 'edit_cart_form.html', content)
+
+
+def delete_cart(request, pk=None):
+    cart = get_object_or_404(Cart, product_id=pk)
+    cart.delete()
+    return redirect('pos')
+
+def delete_cart_all(request):
+    Cart.objects.all().delete()  
+    return redirect('pos')
+
 
 
 def receipt(request):
@@ -249,9 +253,10 @@ def add_product(request):
                         "showMessage": f"{product.name} added."
                     })
                 })
+            
     else:
         form = ProductForm()
-    return render(request, 'product_form.html', {
+    return render(request, 'add_product_form.html', {
         'form': form,
     })
 

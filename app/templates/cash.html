@@ -6,29 +6,15 @@
     <form hx-get="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' method="post" class="modal-content">
           
         {% csrf_token %}
+
         <div class="modal-header">
             <h5 class="modal-title">Cash</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
       
         <div class="cash">
-         
-        <div class="modal-right">
-            <div class="mb-3">
-                <label for="cart_total" class="form-label">Total Amount:</label>
-                <input type="text" id="cart_total" name="cart_total" class="form-control" value="{{ cart_total }}" placeholder="Enter Total Amount">
-            </div>
-            <h5>Total:&nbsp;&nbsp;&nbsp;{{cart_total}}</h5>
-            {% if cash != cart_total %}
-            <h5>Cash:&nbsp;&nbsp;&nbsp;{{ cash }}</h5>
-            {% endif %}
-            {% if change != 0 %}
-            <h5>Change:&nbsp;&nbsp;&nbsp;{{change}}</h5>
-            {% endif %}
-            <h3 id="total"></h3>
-        
-        </div>
-        <div class="receipt2">
+
+                  <div class="receipt2">
             <br>
             <p>WEELEE DOCES</p>
             <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
@@ -53,6 +39,23 @@
             <p>VOLTE SEMPRE</p>
             <p>--------------------------------------------------------------------</p>
         </div>
+         
+        <div class="modal-right">
+            <div class="mb-3">
+                <label for="cart_total" class="form-label">Total Amount:</label>
+                <input type="text" id="cart_total" name="cart_total" class="form-control" value="{{ cart_total }}" placeholder="Enter Total Amount">
+            </div>
+            <h5>Total:&nbsp;&nbsp;&nbsp;{{cart_total}}</h5>
+            {% if cash != cart_total %}
+            <h5>Cash:&nbsp;&nbsp;&nbsp;{{ cash }}</h5>
+            {% endif %}
+            {% if change != 0 %}
+            <h5>Change:&nbsp;&nbsp;&nbsp;{{change}}</h5>
+            {% endif %}
+            <h3 id="total"></h3>
+        
+        </div>
+  
     
     
     </div>
