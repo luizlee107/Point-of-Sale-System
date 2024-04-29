@@ -256,6 +256,7 @@ def add_product(request):
             
     else:
         form = ProductForm()
+
     return render(request, 'add_product_form.html', {
         'form': form,
     })
@@ -278,7 +279,7 @@ def edit_product(request, pk):
             )
     else:
         form = ProductForm(instance=product)
-    return render(request, 'product_form.html', {
+    return render(request, 'edit_product_form.html', {
         'form': form,
         'product': product,
     })

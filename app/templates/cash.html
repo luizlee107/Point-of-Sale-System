@@ -14,7 +14,7 @@
       
         <div class="cash">
 
-                  <div class="receipt2">
+            <div class="receipt2">
             <br>
             <p>WEELEE DOCES</p>
             <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
@@ -26,14 +26,20 @@
             <p>--------------------------------------------------------------------</p>
             <ul>
                 {% for cart_item in cart_items %}
-                <li>{{cart_item.product.barcode}} - {{ cart_item.product.name }} - {{ cart_item.quantity }} UN x {{cart_item.product.price}} = {{cart_item.subtotal}}</li>
-                {% endfor %}
+                    <li>{{cart_item.product.barcode}} - {{ cart_item.product.name }}    -   
+                
+                        {{ cart_item.quantity }} UN x {{cart_item.product.price}} = {{cart_item.subtotal}}
+                    </li>                     
+                        {% endfor %}
+
             </ul>
             <p>--------------------------------------------------------------------</p>
-            <h6>Qtde total de itens R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ total_items }}</h6>
-            <h6>VALOR TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</h6>
-            <h6>DINHEIRO R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cash }}</h6>
-            <h6>TROCO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ change }}</h6>
+            <div class='change-receipt'>
+            <p>Qtde total de itens R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ total_items }}</p>
+            <p>VALOR TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</p>
+            <p>DINHEIRO R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cash }}</p>
+            <p>TROCO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ change }}</p>
+             </div>    
             <p>--------------------------------------------------------------------</p>
             <p>OBRIGADO PELA PREFERENCIA</p>
             <p>VOLTE SEMPRE</p>
