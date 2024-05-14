@@ -14,7 +14,7 @@
       
         <div class="cash">
 
-            <div class="receipt2">
+            <div class="receiptForm">
             <br>
             <p>WEELEE DOCES</p>
             <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
@@ -71,12 +71,17 @@
             <a href="{% url 'receipt' %}" target="_blank">
                 <button type="button" class="btn btn-secondary">Print Receipt-F9</button>
             </a>
+            <button type="button" class="btn btn-secondary" id="printPdfButton">Print Receipt</button>
             <button type="submit" class="btn btn-primary">Save</button>
         </div>
 
     </form>
 
 
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 <script>
     document.getElementById('cart_total').addEventListener('input', function() {
         calculate();
@@ -87,5 +92,21 @@
         var formattedResult = input.toFixed(2); // Format to two decimal places
         document.getElementById('total').textContent = 'Total: R$ ' + formattedResult;
     }
+
+    document.getElementById('printPdfButton').addEventListener('click', function() {
+        html2canvas(document.getElementById('receiptForm')).then(canvas => {
+            console.log(document.getElementById('receiptForm'));
+            var imgData = canvas.toDataURL();
+            var pdf = new jsPDF('p', 'mm', 'a4');
+            var width = pdf.internal.pageSize.getWidth();
+            var height = pdf.internal.pageSize.getHeight();
+            pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+            pdf.save('receipt.pdf');
+            
+            // Trigger print dialog
+            window.print();
+        });
+    });
 </script>
+
 {% endwith %}

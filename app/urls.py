@@ -27,5 +27,7 @@ urlpatterns = [
     path('cart/receipt',views.receipt,name='receipt'),
 
 
-    path('calculator/',views.calc,name='calc')
+    path('calculator/',views.calc,name='calc'),
+
+    path('export-pdf/', views.export_pdf, name='export-pdf'),  
 ]

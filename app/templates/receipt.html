@@ -1,5 +1,5 @@
 {% load static %}
-{% extends 'base.html' %}
+
 
 <!DOCTYPE html>
 <html>
@@ -55,29 +55,28 @@
             <p>OBRIGADO PELA PREFERENCIA</p>
             <p>VOLTE SEMPRE</p>
             <p>--------------------------------------------------------------------</p>
-            <button id="saveAsPdfButton">Save as PDF and Print</button>
+            <button id="printPdfButton">Save as PDF and Print</button>
 
         </div>
 
          <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
+        
          <script>
-            console.log(jsPDF)
-            
-            document.getElementById('saveAsPdfButton').addEventListener('click', function() {
-          
-                // Initialize jsPDF
-                var pdf = new jsPDF();
-   
-                // Add HTML content to PDF
-                pdf.html(document.body, {
-                    callback: function(pdf) {
-                        // Save PDF
-                        pdf.save('receipt.pdf');
-                        
-                        // Trigger print dialog
-                        window.print();
-                    }
+        
+            document.getElementById('printPdfButton').addEventListener('click', function() {
+                html2canvas(document.querySelector('.receipt')).then(canvas => {
+                    var imgData = canvas.toDataURL();
+                    var pdf = new jsPDF('p', 'mm', 'a4');
+                    var width = pdf.internal.pageSize.getWidth();
+                    var height = pdf.internal.pageSize.getHeight();
+                    pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+                    pdf.save('receipt.pdf');
+                    
+                    // Trigger print dialog
+                    window.print();
                 });
             });
         </script>
