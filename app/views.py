@@ -15,7 +15,47 @@ from django.template.loader import render_to_string
 import weasyprint
 
 
-def export_pdf(request): 
+def export_pdf_receipt(request): 
+    sale = Sale.objects.last()  # Get the first Sale object
+    if sale is None:
+        # Handle the case where there is no sale object
+        sale_change = 0
+        sale_cash = 0
+    else:
+        sale_change = sale.change
+        sale_cash = sale.cash
+
+    cart_items = Cart.objects.all()
+    cart_total = 0
+    total_items = 0
+
+    for cart_item in cart_items:
+        cart_item.subtotal = cart_item.quantity * cart_item.product.price
+        cart_total += cart_item.subtotal
+        total_items += cart_item.quantity
+
+    content = {
+        'total_items': total_items,
+        'change': sale_change,
+        'cash': sale_cash,
+        'cart_items': cart_items,
+        'cart_total': cart_total  # Include cart_total in the context
+    }
+    
+    html_index = render_to_string('receipt.html', content)  
+    weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/media')
+    pdf = weasyprint_html.write_pdf(stylesheets=[weasyprint.CSS(string='body { font-family: serif} img {margin: 10px; width: 50px;}')]) 
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=Products'+str(datetime.datetime.now())+'.pdf' 
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(pdf)
+        output.flush() 
+        output.seek(0)
+        response.write(output.read()) 
+    return response
+
+def export_pdf2(request): 
     products = Product.objects.all() # lista todos os produtos 
     html_index = render_to_string('export-pdf.html', {'products': products})  
     weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/media')
@@ -134,10 +174,10 @@ def cash(request):
         change=0
     else:    
         change=float(cash)-float(cart_total)
-
+    
     sale = Sale.objects.create(
         sale_code=0,
-        product_list='anything',
+        product_list=0,
         total_sale=cart_total,
         total_items=total_items,
         cash=cash,
@@ -202,36 +242,35 @@ def delete_cart_all(request):
 
 
 def receipt(request):
-    if request.method == 'GET':
-        cash = request.GET.get('cart_total')
+    sale = Sale.objects.last()  # Get the first Sale object
+    if sale is None:
+        # Handle the case where there is no sale object
+        sale_change = 0
+        sale_cash = 0
+    else:
+        sale_change = sale.change
+        sale_cash = sale.cash
 
     cart_items = Cart.objects.all()
     cart_total = 0
     total_items = 0
 
-    cart_items = Cart.objects.all()
-
     for cart_item in cart_items:
-       
         cart_item.subtotal = cart_item.quantity * cart_item.product.price
         cart_total += cart_item.subtotal
         total_items += cart_item.quantity
-        
-    if cash is None:
-        cash=cart_total
-        change=0
-    else:    
-        change=float(cash)-float(cart_total)
 
     content = {
-        'total_items':total_items,
-        'change':change,
-        'cash':cash,
-        'cart_total':cart_total,
-        'cart_items':cart_items
+        'total_items': total_items,
+        'change': sale_change,
+        'cash': sale_cash,
+        'cart_items': cart_items,
+        'cart_total': cart_total  # Include cart_total in the context
     }
     
     return render(request, 'receipt.html', content)
+
+
 
 
 

@@ -24,7 +24,7 @@ class Sale(models.Model):
     date = models.DateField(auto_now_add=True,null=True,blank=True) 
     
     def __str__(self):
-        return self.sale_code
+        return f"{self.sale_code}, {self.product_list},{self.total_sale},{self.total_items},{self.change},{self.cash},{self.date})"
     
     
 class Pos(models.Model):
