@@ -140,7 +140,8 @@ footer {
     width:100%;
     max-height: 80vh;     
     margin-right: 10px; 
-    line-height:.9;
+    line-height:1.50;
+
 }
 
 .change-receipt {
@@ -148,4 +149,14 @@ footer {
     margin: 30px;
     font-size: 10px
     
+}
+
+
+
+.receipt {
+    width: 80mm; /* Set width to 80mm */
+    height: 40mm; /* Set height to 40mm */
+    margin: 5mm; /* Set margins to 5mm */
+    text-align: center;
+    padding: 5mm; /* Optional: padding for content */
 }
