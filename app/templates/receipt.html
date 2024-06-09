@@ -31,32 +31,37 @@
      
 
         
-    </div>
-        <div class="receiptForm">
+   
+        <div class='change-receipt'>
   
-            <ul>
-                {% for cart_item in cart_items %}
-                    <li>{{cart_item.product.barcode}} - {{ cart_item.product.name }}    -   
-                
-                        {{ cart_item.quantity }} UN x {{cart_item.product.price}} = {{cart_item.subtotal}}
-                
-                    </li>
-                {% endfor %}
          
-                      
-            </ul>
-            <p>--------------------------------------------------------------------</p>
-            <div class='change-receipt'>
+            <tbody>
+                {% for cart_item in cart_items %}
+                            <tr>
+                                <td>{{cart_item.product.barcode}} - {{ cart_item.product.name }} 
+                                    {{ cart_item.quantity }} UN x {{cart_item.product.price}}          = {{cart_item.subtotal}}</td>                              
+             
+                                </td>
+                                <br>
+                            
+                                
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+            <p>-------------------------------------------------------</p>
+
                 <p>Qtde total de itens R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ total_items }}</p>
                 <p>VALOR TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</p>
                 <p>DINHEIRO R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cash }}</p>
                 <p>TROCO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ change }}</p>
+           
+           
             </div>    
             <p>--------------------------------------------------------------------</p>
             <p>OBRIGADO PELA PREFERENCIA</p>
             <p>VOLTE SEMPRE</p>
             <p>--------------------------------------------------------------------</p>
-
+        </div>
         </div>
 
          <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
