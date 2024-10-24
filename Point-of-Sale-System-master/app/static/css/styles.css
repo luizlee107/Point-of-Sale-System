@@ -1,0 +1,162 @@
+/* styles.css */
+
+/* Reset some default styles */
+body,
+h1,
+h2,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+/* Header styles */
+header {
+    background-color:gray;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+/* Navigation styles */
+nav {
+    background-color:#333;
+    color: #fff;
+    padding: 0.5em;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+
+.pos {
+    display: flex;
+}
+
+.left-content {
+    flex-grow: 1;
+    border-radius: 20px; /* Adjust as needed */
+    overflow: hidden;
+    background-color: #f0f0f0; /* Optional: background color */
+    width: 100%;
+    max-width:500px;
+    height: 60vh
+
+}
+
+.filter-input {
+    width: 100px; 
+   
+}
+
+.pos-table {
+
+    text-align:right
+
+}
+
+.right-content {
+    height: 70vh;
+    width: 50%; /* Adjust the width as needed */
+    border-radius: 20px; /* Adjust as needed */
+    overflow: hidden;
+    background-color: #f0f0f0; /* Optional: background color */
+}
+
+
+
+.cart_table {
+    overflow-y:auto;
+    max-height:400px;
+    width: 500px 
+
+}
+
+.cart_total {
+    background-color: #c9c6c6
+}
+
+.cash {
+    display: flex;
+}
+
+.modal-right {
+    flex: 1;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+
+    margin: 10px;
+    font-size: 15px;
+    border-radius: 5px; 
+    overflow: auto; 
+    max-width: 300px; 
+    width:100%;
+    max-height: 80vh;     
+    margin-right: 10px; 
+
+}
+
+.receiptForm {
+    font-family: Arial, sans-serif;
+  
+    text-align: center;
+    margin: 10px;
+    font-size: 9px;
+    border-radius: 5px; 
+    overflow: auto; 
+    max-width: 250px; 
+    width:100%;
+    max-height: 80vh;     
+    margin-right: 10px; 
+    line-height:1.50;
+
+}
+
+.change-receipt {
+    text-align: left;
+    margin: 30px;
+    font-size: 10px
+    
+}
+
+
+
+.receipt {
+    width: 80mm; /* Set width to 80mm */
+    height: 40mm; /* Set height to 40mm */
+    margin: 5mm; /* Set margins to 5mm */
+    text-align: center;
+    padding: 5mm; /* Optional: padding for content */
+}

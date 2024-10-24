@@ -1,0 +1,102 @@
+{% load static %}
+{% load widget_tweaks %}
+{% with WIDGET_ERROR_CLASS='is-invalid' %}
+
+
+    <form hx-get="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' method="post" class="modal-content">
+          
+        {% csrf_token %}
+
+        <div class="modal-header">
+            <h5 class="modal-title">Cash</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      
+        <div class="cash">
+
+            <div class="receiptForm">
+            <br>
+            <p>WEELEE DOCES</p>
+            <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
+            <p>SAO PAULO-SP, CEP: 03014-000</p>
+            <p>--------------------------------------------------------------------</p>
+            <p>CUPOM DE CONTROLE</p>
+            <p>--------------------------------------------------------------------</p>
+            <p id="dateTime"> Cx: 001 Op: 001 </p>
+            <p>--------------------------------------------------------------------</p>
+            
+            <ul>
+                {% for cart_item in cart_items %}
+                    <li>{{cart_item.product.barcode}} - {{ cart_item.product.name }}    -   
+                
+                        {{ cart_item.quantity }} UN x {{cart_item.product.price}} = {{cart_item.subtotal}}
+                    </li>                     
+                        {% endfor %}
+
+            </ul>
+            <p>--------------------------------------------------------------------</p>
+            <div class='change-receipt'>
+            <p>Qtde total de itens R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ total_items }}</p>
+            <p>VALOR TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</p>
+            <p>DINHEIRO R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cash }}</p>
+            <p>TROCO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ change }}</p>
+             </div>    
+            <p>--------------------------------------------------------------------</p>
+            <p>OBRIGADO PELA PREFERENCIA</p>
+            <p>VOLTE SEMPRE</p>
+            <p>--------------------------------------------------------------------</p>
+        </div>
+         
+        <div class="modal-right">
+            <div class="mb-3">
+                <label for="cart_total" class="form-label">Total Amount:</label>
+                <input type="text" id="cart_total" name="cart_total" class="form-control" value="{{ cart_total }}" placeholder="Enter Total Amount">
+            </div>
+            <h5>Total:&nbsp;&nbsp;&nbsp;{{cart_total}}</h5>
+            {% if cash != cart_total %}
+            <h5>Cash:&nbsp;&nbsp;&nbsp;{{ cash }}</h5>
+            {% endif %}
+            {% if change != 0 %}
+            <h5>Change:&nbsp;&nbsp;&nbsp;{{change}}</h5>
+            {% endif %}
+            <h3 id="total"></h3>
+        
+        </div>
+  
+    
+    
+    </div>
+ 
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a href="{% url 'receipt' %}" target="_blank">
+                <button type="button" class="btn btn-secondary">Print Receipt-F9</button>
+            </a>
+            <button type="button" class="btn btn-secondary" id="printPdfButton">Print Receipt</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+
+            <a class="btn btn-danger" href="{% url 'export-pdf-receipt' %}">ExportPDF</a>
+        </div>
+
+    </form>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script>
+    document.getElementById('cart_total').addEventListener('input', function() {
+        calculate();
+    });
+
+    function calculate() {
+        var input = parseFloat(document.getElementById('cart_total').value);
+        var formattedResult = input.toFixed(2); // Format to two decimal places
+        document.getElementById('total').textContent = 'Total: R$ ' + formattedResult;
+    }
+
+ 
+</script>
+
+{% endwith %}

@@ -1,0 +1,46 @@
+{% load widget_tweaks %}
+{% with WIDGET_ERROR_CLASS='is-invalid' %}
+
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' hx-target="#modal" class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Product</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+
+ 
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" id="name" name="name" class="form-control" value="{{ cart.product.name }}" placeholder="{{ cart.product.name }}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label for="barcode" class="form-label">Barcode</label>
+      <input type="text" id="barcode" name="barcode" class="form-control" value="{{ cart.product.barcode }}" placeholder="{{ cart.product.barcode }}" readonly>
+    </div>
+    
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Quantity</label>
+      <input type="text" id="quantity" name="quantity" class="form-control" value="{{ cart.quantity }}" placeholder="{{ cart.quantity }}" price>
+    </div>
+    
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input type="text" id="price" name="price" class="form-control" value="{{ cart.price }}" placeholder="{{ cart.price }}" price>
+    </div>
+ 
+ 
+
+  <div class="modal-footer">
+    {% if product %}
+    <button type="button" class="btn btn-danger" hx-post="{% url 'delete_cart' pk=cart_item.product.id %}">Remove</button>
+    <span class="flex-grow-1"></span>
+    {% endif %}
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" >Save</button>
+  </div>
+</form>
+{% endwith %}

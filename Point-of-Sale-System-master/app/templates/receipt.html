@@ -1,0 +1,103 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Receipt</title>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+   
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+ 
+    <div class="receiptForm">
+    
+
+        <p>WEELEE DOCES</p>
+        <p>AVENIDA CELSO GARCIA, 386, BRÁS,</p>
+        <p>SAO PAULO-SP, CEP: 03014-000</p>
+        <p>--------------------------------------------------------------------</p>
+        <p>CUPOM DE CONTROLE</p>
+        <p>--------------------------------------------------------------------</p>
+        <p id="dateTime"> Cx: 001 Op: 001 </p>
+        <p>--------------------------------------------------------------------</p>
+        <p>#|COD|DESC|QTD|UN|VL UN R$|(VL TR R$) * (VL ITEM R$)</p>
+        <p>--------------------------------------------------------------------</p>
+     
+
+        
+   
+        <div class='change-receipt'>
+  
+         
+            <tbody>
+                {% for cart_item in cart_items %}
+                            <tr>
+                                <td>{{cart_item.product.barcode}} - {{ cart_item.product.name }} 
+                                    {{ cart_item.quantity }} UN x {{cart_item.product.price}}          = {{cart_item.subtotal}}</td>                              
+             
+                                </td>
+                                <br>
+                            
+                                
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+            <p>-------------------------------------------------------</p>
+
+                <p>Qtde total de itens R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ total_items }}</p>
+                <p>VALOR TOTAL R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cart_total }}</p>
+                <p>DINHEIRO R$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cash }}</p>
+                <p>TROCO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ change }}</p>
+           
+           
+            </div>    
+            <p>--------------------------------------------------------------------</p>
+            <p>OBRIGADO PELA PREFERENCIA</p>
+            <p>VOLTE SEMPRE</p>
+            <p>--------------------------------------------------------------------</p>
+        </div>
+        </div>
+
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+        
+         <script>
+        
+            document.getElementById('printPdfButton').addEventListener('click', function() {
+                html2canvas(document.querySelector('.receipt')).then(canvas => {
+                    var imgData = canvas.toDataURL();
+                    var pdf = new jsPDF('p', 'mm', 'a4');
+                    var width = pdf.internal.pageSize.getWidth();
+                    var height = pdf.internal.pageSize.getHeight();
+                    pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+                    pdf.save('receipt.pdf');
+                    
+                    // Trigger print dialog
+                    window.print();
+                });
+            });
+            function updateDateTime() {
+                var now = new Date();
+                var dateTimeString = now.toLocaleString(); 
+    
+    
+                document.getElementById('dateTime').innerHTML = 'Caixa: 001 Op: 001 Data: ' + dateTimeString;
+            }
+    
+            // Call the function initially
+            updateDateTime();
+    
+            setInterval(updateDateTime, 1000);
+        </script>
+        
+
+</body>
+</html>

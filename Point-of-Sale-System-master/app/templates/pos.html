@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}POS{% endblock %}
+
+{% block content %}
+
+<div class="pos">
+    <div class="left-content">
+    <form  method="get" id="filterForm">
+        <div class="form-group mb-2 text-left">
+            <input type="text" id="barcode" name="barcode" placeholder="Filter by Barcode">
+            <button type="submit" class="btn btn-primary mb-2">Filter</button>
+        
+    <button hx-get="{% url 'products_filter' %}" hx-target="#dialog" class="btn btn-primary">
+        Localize Product
+    </button>
+        </div>
+        
+    </form>
+
+
+    <!-- Placeholder for the modal -->
+    <div id="modal" class="modal fade">
+        <div id="dialog" class="modal-dialog" hx-target="this"></div>
+      </div>
+  
+      <!-- Empty toast to show the message -->
+      <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div id="toast-body" class="toast-body"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+ 
+        <!--
+      <div class="pos-table">
+
+        <table class="pos-table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Group</th>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Price</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                    {% for product in filtered_products %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.group }}</td>
+                        <td>{{ product.barcode }}</td>
+                        <td>{{ product.price }}</td>
+                    
+                        
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+-->
+    </form>    
+        <form method="post" action="{% url 'pos' %}">
+            {% csrf_token %}
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required><br>
+            <label for="quantity">Descount(%):</label>
+            <input type="number" id="descount" name="descount" required><br>
+            <label for="quantity">Descount(R$):</label>
+            <input type="number" id="descount" name="descount" required><br>
+
+            <button type="submit">Add to Cart</button>
+
+        </form>
+
+    </div>
+    
+    <div class="right-content">
+        <h1>Cart Items: </h1>
+                  
+        <div class="table-responsive mt-3" style="max-height: 300px; overflow-y: auto;">
+
+                <table class="table table-striped table-bordered table-hover table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Code</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+       
+    
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart_item in cart_items %}
+                            <tr>
+                                <td>{{cart_item.product.barcode}} - {{ cart_item.product.name }}  </td>                              
+                                <td> {{ cart_item.quantity }} UN x {{cart_item.price}} = {{cart_item.subtotal}}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" hx-get="{% url 'edit_cart' pk=cart_item.id %}" hx-target="#dialog">Edit</button>
+                                  </td>
+                                <td><a href="{% url 'delete_cart' pk=cart_item.product.id %}" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"> x </i>
+                                </a></td>
+                     
+                            
+                                
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>                  
+        </ul>
+
+    
+    <div class='cart_total'>
+  
+      <h1>TOTAL: {{cart_total}} </h1>
+      <h5>Items: {{total_items}} </h5>
+    </div>
+        <button hx-get="{% url 'cash' %}" hx-target="#dialog" class="btn btn-primary">
+            Cash - F2
+        </button>
+        <button hx-get="{% url 'card' %}" hx-target="#dialog" class="btn btn-primary">
+            Card - F4
+        </button>
+        <a  href="{% url 'delete_cart_all' %}" class="btn btn-primary">
+            Clean Cart
+        </a>
+      
+        <br>
+        <br>
+
+    </div>
+
+    </div>
+    <button type="submit">Troca</button>
+    <button type="submit">Devolução</button>
+    <button type="submit">Outras Opções</button>
+    <button type="submit">?</button>
+
+
+{% endblock %}
+
+
