@@ -127,11 +127,11 @@
       <h1>TOTAL: {{cart_total}} </h1>
       <h5>Items: {{total_items}} </h5>
     </div>
-        <button hx-get="{% url 'cash' %}" hx-target="#dialog" class="btn btn-primary">
+        <button id="cash-btn" hx-get="{% url 'cash' %}" hx-target="#dialog" class="btn btn-primary">
             Cash - F2
         </button>
-        <button hx-get="{% url 'card' %}" hx-target="#dialog" class="btn btn-primary">
-            Card - F4
+        <button id="card-btn" hx-get="{% url 'card' %}" hx-target="#dialog" class="btn btn-primary">
+            Card - F3
         </button>
         <a  href="{% url 'delete_cart_all' %}" class="btn btn-primary">
             Clean Cart
@@ -147,6 +147,22 @@
     <button type="submit">Devolução</button>
     <button type="submit">Outras Opções</button>
     <button type="submit">?</button>
+
+    <!-- JavaScript to handle keyboard shortcuts -->
+    
+<script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'F2') {
+            event.preventDefault();
+            document.getElementById('cash-btn').click();
+        }
+        if (event.key === 'F3') {
+            event.preventDefault();
+            document.getElementById('card-btn').click();
+        }
+
+    });
+</script>
 
 
 {% endblock %}

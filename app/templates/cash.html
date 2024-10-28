@@ -68,10 +68,10 @@
  
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <a href="{% url 'receipt' %}" target="_blank">
-                <button type="button" class="btn btn-secondary">Print Receipt-F9</button>
+            <a  href="{% url 'receipt' %}" target="_blank">
+                <button id="print-btn" type="button" class="btn btn-secondary">Print Receipt-F9</button>
             </a>
-            <button type="button" class="btn btn-secondary" id="printPdfButton">Print Receipt</button>
+
             <button type="submit" class="btn btn-primary">Save</button>
 
             <a class="btn btn-danger" href="{% url 'export-pdf-receipt' %}">ExportPDF</a>
@@ -95,7 +95,22 @@
         document.getElementById('total').textContent = 'Total: R$ ' + formattedResult;
     }
 
+    
  
 </script>
+
+    
+<script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'F9') {
+            event.preventDefault();
+            document.getElementById('print-btn').click();
+        }
+
+
+    });
+</script>
+
+
 
 {% endwith %}
